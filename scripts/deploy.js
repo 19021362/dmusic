@@ -7,15 +7,13 @@
 const hre = require("hardhat");
 
 async function main() {
+  const [deployer] = await hre.ethers.getSigners();
+  console.log("Deploying contracts with the account: " + deployer.address);
 
   const Dmusic = await hre.ethers.getContractFactory("Dmusic");
   const dmusic = await Dmusic.deploy();
 
-  await dmusic.deployed();
-
-  console.log(
-    `Dmusic deployed to ${dmusic.address}`
-  );
+  console.log(`Dmusic deployed to ${dmusic.address}`);
 }
 
 // We recommend this pattern to be able to use async/await everywhere

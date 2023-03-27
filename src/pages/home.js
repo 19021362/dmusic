@@ -6,7 +6,7 @@ import contractAbi from "../abis/Dmusic.json";
 
 const contractAddress = process.env.REACT_APP_CONTRACT_ADDRESS;
 
-const ArtistPage = () => {
+const HomePage = () => {
   const navigate = useNavigate();
 
   const provider = new ethers.providers.Web3Provider(window.ethereum);
@@ -17,9 +17,9 @@ const ArtistPage = () => {
     provider
   );
 
-  const [artistAddress, setArtistAddress] = useState("");
-  const [artistId, setArtistId] = useState("");
-  const [artistSonglist, setArtistSonglist] = useState([]);
+  const [userAddress, setUserAddress] = useState("");
+  const [userId, setUserId] = useState("");
+  const [userSonglist, setUserSonglist] = useState([]);
 
   const disconnectWallet = async () => {
     navigate("/");
@@ -33,23 +33,17 @@ const ArtistPage = () => {
       });
     };
 
-    const loadArtist = async () => {
-      const check_artist = await dMusicContract.connect(signer).checkArtist();
-      if (!check_artist) {
-        const tx = await dMusicContract.connect(signer).addNewArtist();
-        await tx.wait();
-      }
-
-      const tx = await dMusicContract.connect(signer).getArtistDetails();
+    const loadUser = async () => {
+      const tx = await dMusicContract.connect(signer).getAudienceDetails();
       console.log({ tx });
       if (tx && tx.length) {
-        setArtistAddress(tx[0]);
-        setArtistId(tx[1].toString());
-        setArtistSonglist(tx[2]);
+        setUserAddress(tx[0]);
+        setUserId(tx[1].toString());
+        setUserSonglist(tx[2]);
       }
     };
 
-    loadArtist();
+    loadUser();
     changeAccount();
   }, []);
 
@@ -60,15 +54,15 @@ const ArtistPage = () => {
         <button onClick={disconnectWallet}>Logout</button>
       </div>
       <div>
-        <h1>Artist address: {artistAddress}</h1>
-        <h1>Artist id: {artistId}</h1>
-        <h1>Artist songs purchased: {artistSonglist.length}</h1>
+        <h1>User address: {userAddress}</h1>
+        <h1>User id: {userId}</h1>
+        <h1>User songs purchased: {userSonglist.length}</h1>
       </div>
       <div>
-        <button onClick={() => {navigate("/home")}}>Go to Home page</button>
+        <button onClick={() => {navigate("/artist")}}>Go to Artist page</button>
       </div>
     </>
   );
 };
 
-export default ArtistPage;
+export default HomePage;

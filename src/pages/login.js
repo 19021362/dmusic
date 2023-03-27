@@ -1,40 +1,62 @@
-import React, { useState } from 'react';
-import Web3 from 'web3';
+import { ethers } from "ethers";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router";
 
-import contractABI from '../abis/Dmusic.json';
+import contractAbi from "../abis/Dmusic.json";
 
-function LoginPage() {
-  const [account, setAccount] = useState('');
+const contractAddress = process.env.REACT_APP_CONTRACT_ADDRESS;
 
-  const web3 = new Web3(Web3.givenProvider || "http://127.0.0.1:8545/");
-  const contract = new web3.eth.Contract(contractABI.abi);
-  contract.setProvider(web3.currentProvider);
+const LoginPage = () => {
+  const navigate = useNavigate();
 
-  async function connectMetamask() {
-    if (window.ethereum) {
-      try {
-        await window.ethereum.request({ method: 'eth_requestAccounts' });
-        const accounts = await web3.eth.getAccounts();
+  const provider = new ethers.providers.Web3Provider(window.ethereum);
+  const signer = provider.getSigner();
+  const dMusicContract = new ethers.Contract(
+    contractAddress,
+    contractAbi.abi,
+    provider
+  );
+
+  const [account, setAccount] = useState("");
+
+  const connectWallet = async () => {
+    try {
+      const { ethereum } = window;
+      if (!ethereum) {
+        alert("Please install MetaMask");
+        return;
+      }
+      const accounts = await provider.send("eth_requestAccounts", []);
+      const nw = await provider.getNetwork();
+      //nw.chainId === 31337
+      if (nw.chainId.toString() === "31337") {
         setAccount(accounts[0]);
         
-      } catch (error) {
-        console.log(error);
+        const check_user = await dMusicContract.connect(signer).checkUser();
+        console.log({ check_user });
+        if (!check_user) {
+          const tx = await dMusicContract.connect(signer).addNewAudience(accounts[0]);
+          console.log({ tx });
+          await tx.wait();
+        }
+        console.log("Login successfully");
+
+        navigate("/home");
+      } else {
+        //alert("Wrong network!");
+        alert("Wrong network!");
       }
-    } else {
-      console.log('Metamask not detected.');
+    } catch (error) {
+      console.log(error);
     }
-  }
+  };
 
   return (
     <div>
       <h1>Login with Metamask</h1>
-      {account ? (
-        <p>Connected with {account}</p>
-      ) : (
-        <button onClick={connectMetamask}>Connect with Metamask</button>
-      )}
+      <button onClick={connectWallet}>Login with Metamask</button>
     </div>
   );
-}
+};
 
 export default LoginPage;

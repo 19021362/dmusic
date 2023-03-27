@@ -29,10 +29,9 @@ contract Dmusic {
     }
 
     mapping(address => bool) identifyUser;
+    mapping(address => bool) identifyArtist;
     mapping(address => Artist) allArtists;
     mapping(address => Audience) allAudience;
-    mapping(uint256 => Artist) allIdArtists;
-    mapping(uint256 => Audience) allIdAudience;
     mapping(uint256 => Song) allSongs;
     mapping(uint256 => uint256) timesSongPurchased;
     mapping(string => bool) songHashUsed;
@@ -52,17 +51,21 @@ contract Dmusic {
         return identifyUser[msg.sender];
     }
 
+    function checkArtist() public view returns (bool) {
+        return identifyArtist[msg.sender];
+    }
+
     function addNewArtist() public {
         Audience storage user = allAudience[msg.sender];
-        require(allArtists[msg.sender].artistID == 0, "Already artist");
         artistIDTracker += 1;
-
         Artist memory newArtist;
         newArtist.name = user.name;
         newArtist.artistID = artistIDTracker;
         getArtistAddress[artistIDTracker] = payable(msg.sender);
 
         allArtists[msg.sender] = newArtist;
+
+        identifyArtist[msg.sender] = true;
     }
 
     function addNewAudience(string memory _name) public {
@@ -191,8 +194,9 @@ contract Dmusic {
             identifyUser[msg.sender] == true,
             "Not an user."
         );
-        
-        Artist memory artist = allIdArtists[_artistIDTracker];
+
+        address artistAddress = payable(getArtistAddress[_artistIDTracker]);
+        Artist memory artist = allArtists[artistAddress];
 
         require(msg.sender.balance > msg.value, "Insufficient balance.");
 
