@@ -28,6 +28,7 @@ const LoginPage = () => {
       }
       const accounts = await provider.send("eth_requestAccounts", []);
       const nw = await provider.getNetwork();
+      console.log({ nw });
       //nw.chainId === 31337
       if (nw.chainId.toString() === "31337") {
         setAccount(accounts[0]);

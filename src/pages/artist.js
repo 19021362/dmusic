@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 
 import contractAbi from "../abis/Dmusic.json";
+import AddSongModal from "../components/addnewsong";
 
 const contractAddress = process.env.REACT_APP_CONTRACT_ADDRESS;
 
@@ -20,6 +21,7 @@ const ArtistPage = () => {
   const [artistAddress, setArtistAddress] = useState("");
   const [artistId, setArtistId] = useState("");
   const [artistSonglist, setArtistSonglist] = useState([]);
+  const [addSong, setAddSong] = useState(false);
 
   const disconnectWallet = async () => {
     navigate("/");
@@ -56,7 +58,7 @@ const ArtistPage = () => {
   return (
     <>
       <div>
-        <h1>Home Page</h1>
+        <h1>Artist Page</h1>
         <button onClick={disconnectWallet}>Logout</button>
       </div>
       <div>
@@ -64,6 +66,10 @@ const ArtistPage = () => {
         <h1>Artist id: {artistId}</h1>
         <h1>Artist songs purchased: {artistSonglist.length}</h1>
       </div>
+      <div>
+        <button onClick={() => {setAddSong(true)}}>Release new song</button>
+      </div>
+      {addSong && (<><AddSongModal contract = {dMusicContract} signer = {signer} /><button onClick={() => {setAddSong(false)}}>Cancel</button></>)}
       <div>
         <button onClick={() => {navigate("/home")}}>Go to Home page</button>
       </div>
