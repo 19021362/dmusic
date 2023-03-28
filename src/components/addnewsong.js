@@ -1,11 +1,8 @@
+import { wait } from "@testing-library/user-event/dist/utils";
 import axios from "axios";
 import { ethers } from "ethers";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
-
-import contractAbi from "../abis/Dmusic.json";
-
-const contractAddress = process.env.REACT_APP_CONTRACT_ADDRESS;
 
 const initialValues = {
   name: "",
@@ -17,9 +14,7 @@ const initialValues = {
 const AddSongModal = (props) => {
   const dMusicContract = props.contract;
   const signer = props.signer;
-
-  console.log(dMusicContract);
-  console.log(signer);
+  const setAddSong = props.setAddSong;
 
   const [values, setValues] = useState(initialValues);
 
@@ -41,38 +36,40 @@ const AddSongModal = (props) => {
   };
 
   const handleSubmit = async (e) => {
+    e.preventDefault();
+
     console.log({ values });
     if (values.file) {
       try {
         const formData = new FormData();
         formData.append("file", values.file);
         console.log({ formData });
-        const resFile = await axios({
-          method: "post",
-          url: "https://api.pinata.cloud/pinning/pinFileToIPFS",
-          data: formData,
-          headers: {
-            pinata_api_key: `${process.env.REACT_APP_PINATA_API_KEY}`,
-            pinata_secret_api_key: `${process.env.REACT_APP_PINATA_API_SECRET}`,
-            "Content-Type": "multipart/form-data",
-          },
-        });
-        console.log({ resFile });
-        const fileHash = `ipfs://${resFile.data.IpfsHash}`;
+        const res = await axios.post(
+          "https://api.pinata.cloud/pinning/pinFileToIPFS",
+          formData,
+          {
+            maxBodyLength: "Infinity",
+            headers: {
+              "Content-Type": `multipart/form-data; boundary=${formData._boundary}`,
+              Authorization: `Bearer ${process.env.REACT_APP_PINATA_API_JWT}`,
+            },
+          }
+        );
+        console.log({ res });
+        const fileHash = `${res.data.IpfsHash}`;
         console.log({ fileHash });
 
-        const tx = dMusicContract
+        await dMusicContract
           .connect(signer)
           .addSong(values.name, values.genre, fileHash, values.price);
-        await tx.wait();
 
-        alert(tx);
+        setAddSong(false);
+        //wait(1000);
       } catch (error) {
         console.log("Error sending File to IPFS: ");
         console.log(error);
       }
     }
-
   };
 
   return (

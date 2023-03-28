@@ -35,7 +35,7 @@ const HomePage = () => {
 
     const loadUser = async () => {
       const tx = await dMusicContract.connect(signer).getAudienceDetails();
-      console.log({ tx });
+      //console.log({ tx });
       if (tx && tx.length) {
         setUserAddress(tx[0]);
         setUserId(tx[1].toString());
@@ -51,15 +51,11 @@ const HomePage = () => {
     <>
       <div>
         <h1>Home Page</h1>
-        <button onClick={disconnectWallet}>Logout</button>
       </div>
       <div>
         <h1>User address: {userAddress}</h1>
         <h1>User id: {userId}</h1>
         <h1>User songs purchased: {userSonglist.length}</h1>
-      </div>
-      <div>
-        <button onClick={() => {navigate("/artist")}}>Go to Artist page</button>
       </div>
     </>
   );
