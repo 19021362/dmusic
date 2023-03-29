@@ -19,5 +19,14 @@ Copy the address to the `.env` file
 
 Now in the folder `artifacts/contract/Dmusic.sol` has 2 file `.json`. Copy those files to the `src/abis`.
 
+# Config .evn file
+```
+REACT_APP_PINATA_API_KEY=<your_api_key>
+REACT_APP_PINATA_SECRET_API_KEY=<your_secret_api_key>
+
+REACT_APP_CONTRACT_ADDRESS=<address_deployed_contract>
+```
+You can create get the **pinata api key** and **secret key** [HERE](https://app.pinata.cloud/pinmanager) 
+
 # Start the app
 `npm start`
