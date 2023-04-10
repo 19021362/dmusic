@@ -1,5 +1,6 @@
 # Requirement 
 - Node: >= 16
+- MetaMask wallet
 # Setup
 ``` npm install ```
 or
@@ -20,6 +21,7 @@ Copy the address to the `.env` file
 Now in the folder `artifacts/contract/Dmusic.sol` has 2 file `.json`. Copy those files to the `src/abis`.
 
 # Config .evn file
+Create the `.env` file in the same root with `src` folder
 ```
 REACT_APP_PINATA_API_KEY=<your_api_key>
 REACT_APP_PINATA_SECRET_API_KEY=<your_secret_api_key>
