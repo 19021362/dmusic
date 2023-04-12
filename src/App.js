@@ -1,14 +1,10 @@
-import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
-import SideBar from "./components/sidebar";
-import ArtistPage from "./pages/artist";
-import HomePage from "./pages/home";
 import LoginPage from "./pages/login";
-import SonglistPage from "./pages/songlist";
 
 function App() {
   return (
     <div className="App">
+      
       <LoginPage />
       {/* <BrowserRouter>
         <SideBar />

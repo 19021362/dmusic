@@ -6,9 +6,8 @@ import { BrowserRouter } from "react-router-dom";
 import contractAbi from "../../abis/Dmusic.json";
 import SideBar from "../../components/sidebar";
 import ArtistPage from "../artist";
-import HomePage from "../home";
+import HomePage from "../home/home";
 import SonglistPage from "../songlist";
-
 import "./index.css";
 
 const contractAddress = process.env.REACT_APP_CONTRACT_ADDRESS;
@@ -76,10 +75,13 @@ const LoginPage = () => {
     <>
       {!account && (
         <div>
-          <h1>Login with Metamask</h1>
-          <span className="login-btn" onClick={connectWallet}>
-            Login with Metamask
-          </span>
+          <div className="Background"></div>
+          <div className="container">
+            <h1>Welcome to DMUSIC</h1>
+            <span className="login-btn" onClick={connectWallet}>
+              Login with Metamask
+            </span>
+          </div>
         </div>
       )}
       {!!account && renderContent()}
