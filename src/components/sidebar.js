@@ -2,15 +2,38 @@ import { ethers } from "ethers";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 
-const SideBar = () => {
-    const navigate = useNavigate();
+const SideBar = ({ setAccount }) => {
+  const navigate = useNavigate();
+
+  const onLogout = () => {
+    setAccount(null);
+  };
+
   return (
     <>
       <div>
-        <button onClick={() => {navigate("/home")}}>Homepage</button>
-        <button onClick={() => {navigate("/artist")}}>My studio</button>
-        <button onClick={() => {navigate("/songlist")}}>Song Market</button>
-        <button onClick={() => {navigate("/")}}>Logout</button>
+        <button
+          onClick={() => {
+            navigate("/");
+          }}
+        >
+          Homepage
+        </button>
+        <button
+          onClick={() => {
+            navigate("/artist");
+          }}
+        >
+          My studio
+        </button>
+        <button
+          onClick={() => {
+            navigate("/songlist");
+          }}
+        >
+          Song Marketplace
+        </button>
+        <button onClick={onLogout}>Logout</button>
       </div>
     </>
   );

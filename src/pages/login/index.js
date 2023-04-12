@@ -1,14 +1,19 @@
 import { ethers } from "ethers";
 import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router";
+import { Route, Routes } from "react-router";
+import { BrowserRouter } from "react-router-dom";
 
-import contractAbi from "../abis/Dmusic.json";
+import contractAbi from "../../abis/Dmusic.json";
+import SideBar from "../../components/sidebar";
+import ArtistPage from "../artist";
+import HomePage from "../home";
+import SonglistPage from "../songlist";
+
+import "./index.css";
 
 const contractAddress = process.env.REACT_APP_CONTRACT_ADDRESS;
 
 const LoginPage = () => {
-  const navigate = useNavigate();
-
   const provider = new ethers.providers.Web3Provider(window.ethereum);
   const signer = provider.getSigner();
   const dMusicContract = new ethers.Contract(
@@ -17,7 +22,7 @@ const LoginPage = () => {
     provider
   );
 
-  const [account, setAccount] = useState("");
+  const [account, setAccount] = useState(null);
 
   const connectWallet = async () => {
     try {
@@ -32,19 +37,18 @@ const LoginPage = () => {
       //nw.chainId === 31337
       if (nw.chainId.toString() === "31337") {
         setAccount(accounts[0]);
-        
+
         const check_user = await dMusicContract.connect(signer).checkUser();
         console.log({ check_user });
         if (!check_user) {
-          const tx = await dMusicContract.connect(signer).addNewAudience(accounts[0]);
+          const tx = await dMusicContract
+            .connect(signer)
+            .addNewAudience(accounts[0]);
           console.log({ tx });
           await tx.wait();
         }
         console.log("Login successfully");
-
-        navigate("/home");
       } else {
-        //alert("Wrong network!");
         alert("Wrong network!");
       }
     } catch (error) {
@@ -52,11 +56,34 @@ const LoginPage = () => {
     }
   };
 
+  const renderContent = () => {
+    console.log("content rendered");
+    return (
+      <BrowserRouter>
+        <SideBar setAccount={setAccount} />
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/artist" element={<ArtistPage />} />
+          <Route path="/songlist" element={<SonglistPage />} />
+        </Routes>
+      </BrowserRouter>
+    );
+  };
+
+  useEffect(() => {}, [account]);
+
   return (
-    <div>
-      <h1>Login with Metamask</h1>
-      <button onClick={connectWallet}>Login with Metamask</button>
-    </div>
+    <>
+      {!account && (
+        <div>
+          <h1>Login with Metamask</h1>
+          <span className="login-btn" onClick={connectWallet}>
+            Login with Metamask
+          </span>
+        </div>
+      )}
+      {!!account && renderContent()}
+    </>
   );
 };
 

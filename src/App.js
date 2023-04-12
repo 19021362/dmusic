@@ -9,15 +9,15 @@ import SonglistPage from "./pages/songlist";
 function App() {
   return (
     <div className="App">
-      <BrowserRouter>
+      <LoginPage />
+      {/* <BrowserRouter>
         <SideBar />
         <Routes>
-          <Route path="/" index element={<LoginPage />} />
           <Route path="/home" element={<HomePage />} />
           <Route path="/artist" element={<ArtistPage />} />
           <Route path="/songlist" element={<SonglistPage />} />
         </Routes>
-      </BrowserRouter>
+      </BrowserRouter> */}
     </div>
   );
 }
