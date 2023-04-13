@@ -1,7 +1,7 @@
 import { ethers } from "ethers";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
-
+import './index.css';
 const SideBar = ({ setAccount }) => {
   const navigate = useNavigate();
 
@@ -11,7 +11,7 @@ const SideBar = ({ setAccount }) => {
 
   return (
     <>
-      <div>
+      <div className="sidebar">
         <button
           onClick={() => {
             navigate("/");

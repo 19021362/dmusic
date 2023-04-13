@@ -1,8 +1,8 @@
 import { ethers } from "ethers";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
-
-import contractAbi from "../abis/Dmusic.json";
+import "./index.css";
+import contractAbi from "../../abis/Dmusic.json";
 
 const contractAddress = process.env.REACT_APP_CONTRACT_ADDRESS;
 
@@ -22,7 +22,7 @@ const HomePage = () => {
   const [userSonglist, setUserSonglist] = useState([]);
 
   const disconnectWallet = async () => {
-    navigate("/");
+    navigate("/home");
   };
 
   useEffect(() => {
@@ -49,13 +49,16 @@ const HomePage = () => {
 
   return (
     <>
-      <div>
-        <h1>Home Page</h1>
-      </div>
-      <div>
-        <h1>User address: {userAddress}</h1>
-        <h1>User id: {userId}</h1>
-        <h1>User songs purchased: {userSonglist.length}</h1>
+      <div className="background"></div>
+      <div className="container">
+        <div className="title">
+          <h1>Home Page</h1>
+        </div>
+        <div className="info">
+          <h1>Your address: {userAddress}</h1>
+          <h1>Your id: {userId}</h1>
+          <h1>Number of songs you have purchased: {userSonglist.length}</h1>
+        </div>
       </div>
     </>
   );

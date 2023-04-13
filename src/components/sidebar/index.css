@@ -1,0 +1,17 @@
+.sidebar {
+  position: fixed;
+  padding: 16px 12.5%;
+  align-items: center;
+}
+button {
+  padding: 16px 20px;
+  margin: 12px 20px;
+  border: none;
+  background: transparent;
+  color: #e4e4e4;
+  font-size: 18px;
+  text-decoration: none;
+}
+button:hover {
+  cursor: pointer;
+}
