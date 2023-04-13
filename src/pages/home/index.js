@@ -1,7 +1,7 @@
 import { ethers } from "ethers";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
-import "./home.css";
+import "./index.css";
 import contractAbi from "../../abis/Dmusic.json";
 
 const contractAddress = process.env.REACT_APP_CONTRACT_ADDRESS;
@@ -51,11 +51,10 @@ const HomePage = () => {
     <>
       <div className="background"></div>
       <div className="container">
-      
-        <div>
+        <div className="title">
           <h1>Home Page</h1>
         </div>
-        <div>
+        <div className="info">
           <h1>Your address: {userAddress}</h1>
           <h1>Your id: {userId}</h1>
           <h1>Number of songs you have purchased: {userSonglist.length}</h1>

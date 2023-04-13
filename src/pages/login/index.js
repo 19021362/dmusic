@@ -6,7 +6,7 @@ import { BrowserRouter } from "react-router-dom";
 import contractAbi from "../../abis/Dmusic.json";
 import SideBar from "../../components/sidebar";
 import ArtistPage from "../artist";
-import HomePage from "../home/home";
+import HomePage from "../home/index";
 import SonglistPage from "../songlist";
 import "./index.css";
 
@@ -77,7 +77,7 @@ const LoginPage = () => {
         <div>
           <div className="Background"></div>
           <div className="container">
-            <h1>Welcome to DMUSIC</h1>
+            <h1 className="welcome">Welcome to DMUSIC</h1>
             <span className="login-btn" onClick={connectWallet}>
               Login with Metamask
             </span>

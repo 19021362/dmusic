@@ -1,7 +1,7 @@
 import { ethers } from "ethers";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
-import './css/sidebar.css';
+import './index.css';
 const SideBar = ({ setAccount }) => {
   const navigate = useNavigate();
 
