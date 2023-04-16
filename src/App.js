@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { useState, useEffect } from "react";
 import { Routes, Route, Navigate, useLocation, useNavigate } from "react-router-dom";
 import { ThemeProvider } from "@mui/material/styles";
@@ -41,6 +42,11 @@ export default function App() {
     }
   };
 
+  const disconnectWallet = async () => {
+    navigate("/");
+    setIsLogin(false);
+  };
+
   // Setting the dir attribute for the body element
   useEffect(() => {
     document.body.setAttribute("dir", direction);
@@ -53,10 +59,19 @@ export default function App() {
   }, [pathname]);
 
   useEffect(() => {
+    const changeAccount = async () => {
+      window.ethereum.on("accountsChanged", async (accounts) => {
+        console.log(accounts[0]);
+        await disconnectWallet();
+      });
+    };
+
     if (!user) {
       navigate("/");
       setIsLogin(false);
     }
+
+    changeAccount();
   }, [user]);
 
   const getRoutes = (allRoutes) =>

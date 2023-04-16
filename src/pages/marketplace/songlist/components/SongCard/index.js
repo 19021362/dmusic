@@ -11,7 +11,7 @@ import MDTypography from "components/MDTypography";
 import MDButton from "components/MDButton";
 import { Grid } from "@mui/material";
 
-function SongCard({ image, song }) {
+function SongCard({ image, song, buySong }) {
   return (
     <Card
       sx={{
@@ -80,7 +80,12 @@ function SongCard({ image, song }) {
           </Grid>
         </MDBox>
         <MDBox display="flex" justifyContent="center" alignItems="center" mb={-1}>
-          <MDButton variant="gradient" size="small" color="info">
+          <MDButton
+            variant="gradient"
+            size="small"
+            color="info"
+            onClick={() => buySong({ id: song.id, price: song.price })}
+          >
             {song.price} ETH
           </MDButton>
         </MDBox>
@@ -93,6 +98,7 @@ function SongCard({ image, song }) {
 SongCard.propTypes = {
   image: PropTypes.string.isRequired,
   song: PropTypes.object.isRequired,
+  buySong: PropTypes.func.isRequired,
 };
 
 export default SongCard;

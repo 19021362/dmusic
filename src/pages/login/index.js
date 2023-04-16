@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 // eslint-disable-next-line import/no-extraneous-dependencies
@@ -27,27 +28,25 @@ function LoginPage({ setIsLogin, setUser }) {
         alert("Please install MetaMask");
         return;
       }
-      // const accounts = await provider.send("eth_requestAccounts", []);
-      // const nw = await provider.getNetwork();
-      // console.log({ nw });
-      // //nw.chainId === 31337
-      // if (nw.chainId.toString() === "31337") {
-      //   const check_user = await dMusicContract.connect(signer).checkUser();
-      //   console.log({ check_user });
-      //   if (!check_user) {
-      //     const tx = await dMusicContract
-      //       .connect(signer)
-      //       .addNewAudience(accounts[0]);
-      //     console.log({ tx });
-      //     await tx.wait();
-      //   }
-      //   console.log(accounts[0]);
-      setUser(Accounts[0]);
-      setIsLogin(true);
-      console.log("Login successfully");
-      // } else {
-      //   alert("Wrong network!");
-      // }
+      const accounts = await provider.send("eth_requestAccounts", []);
+      const nw = await provider.getNetwork();
+      console.log({ nw });
+      // nw.chainId === 31337
+      if (nw.chainId.toString() === "31337") {
+        const checkUser = await dMusicContract.connect(signer).checkUser();
+        console.log({ checkUser });
+        if (!checkUser) {
+          const tx = await dMusicContract.connect(signer).addNewAudience(accounts[0]);
+          console.log({ tx });
+          await tx.wait();
+        }
+        console.log(accounts[0]);
+        setUser(accounts[0]);
+        setIsLogin(true);
+        console.log("Login successfully");
+      } else {
+        alert("Wrong network!");
+      }
     } catch (error) {
       console.log(error);
     }

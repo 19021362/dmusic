@@ -10,7 +10,6 @@ import fakeImage from "assets/images/team-1.jpg";
 
 export default function songsTableData({ songListPurchased, handleSelectSong }) {
   const onClickName = ({ song }) => {
-    console.log({ song });
     handleSelectSong({ song });
   };
 

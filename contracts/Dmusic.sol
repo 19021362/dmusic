@@ -171,9 +171,9 @@ contract Dmusic {
             "Cannot buy the song twice."
         );
 
-        require(msg.sender.balance > allSongs[_songID].price * 10**18, "Insufficient balance.");
+        require(msg.sender.balance > allSongs[_songID].price, "Insufficient balance.");
 
-        allSongs[_songID].artistAddress.transfer(allSongs[_songID].price * 10**18);
+        allSongs[_songID].artistAddress.transfer(allSongs[_songID].price);
         timesSongPurchased[_songID] += 1;
 
         allAudience[msg.sender].songsPurchased.push(_songID);
@@ -189,7 +189,7 @@ contract Dmusic {
 
     event artistDonated(string artistName, string audienceName, uint256 amount);
 
-    function donateArtist(uint256 _artistIDTracker) public payable {
+    function donateArtist(uint256 _artistIDTracker, uint256 _amount) public payable {
         require(
             identifyUser[msg.sender] == true,
             "Not an user."
@@ -198,11 +198,11 @@ contract Dmusic {
         address artistAddress = payable(getArtistAddress[_artistIDTracker]);
         Artist memory artist = allArtists[artistAddress];
 
-        require(msg.sender.balance > msg.value, "Insufficient balance.");
+        require(msg.sender.balance > _amount, "Insufficient balance.");
 
-        getArtistAddress[_artistIDTracker].transfer(msg.value);
+        getArtistAddress[_artistIDTracker].transfer(_amount);
 
-        emit artistDonated(artist.name, allAudience[msg.sender].name, msg.value);
+        emit artistDonated(artist.name, allAudience[msg.sender].name, _amount);
     }
 
     function getSongDetails(uint256 _songID)

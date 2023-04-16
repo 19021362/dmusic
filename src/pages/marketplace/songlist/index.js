@@ -19,7 +19,7 @@ import fakeImage from "assets/images/pexels-stas-knop-1319799.jpg";
 import { Divider } from "@mui/material";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 
-function SongList({ songlist }) {
+function SongList({ songlist, buySong }) {
   return (
     <DashboardLayout>
       <DashboardNavbar />
@@ -36,7 +36,7 @@ function SongList({ songlist }) {
           <Grid container spacing={6}>
             {songlist?.map((song) => (
               <Grid item xs={12} md={6} xl={3}>
-                <SongCard song={song} image={fakeImage} />
+                <SongCard song={song} image={fakeImage} buySong={buySong} />
               </Grid>
             ))}
           </Grid>
@@ -48,6 +48,7 @@ function SongList({ songlist }) {
 
 SongList.propTypes = {
   songlist: PropTypes.array.isRequired,
+  buySong: PropTypes.func.isRequired,
 };
 
 export default SongList;

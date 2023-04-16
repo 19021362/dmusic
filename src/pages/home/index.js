@@ -17,8 +17,6 @@ import Tables from "./tables";
 const contractAddress = process.env.REACT_APP_CONTRACT_ADDRESS;
 
 export default function HomePage() {
-  const navigate = useNavigate();
-
   const provider = new ethers.providers.Web3Provider(window.ethereum);
   const signer = provider.getSigner();
   const dMusicContract = new ethers.Contract(contractAddress, contractAbi.abi, provider);
@@ -26,24 +24,39 @@ export default function HomePage() {
   const [user, setUser] = useState(null);
   const [currentSong, setCurrentSong] = useState(null);
 
-  const disconnectWallet = async () => {
-    navigate("/");
-  };
-
   const loadUser = async () => {
-    // const tx = await dMusicContract.connect(signer).getAudienceDetails();
-    // //console.log({ tx });
-    // if (tx && tx.length) {
-    //   setUserAddress(tx[0]);
-    //   setUserId(tx[1].toString());
-    //   setUserSonglist(tx[2]);
-    // }
-    const fakeUser = Users[0];
-    const fakeSongListPurchased = Songlist;
+    const tx = await dMusicContract.connect(signer).getAudienceDetails();
+
+    let userInfo = {};
+    if (tx && tx.length) {
+      userInfo = {
+        name: tx[0].toString(),
+        id: tx[1].toString(),
+        songsPurchased: tx[2],
+      };
+    }
+
+    const songListPurchased = await Promise.all(
+      tx[2]?.map(async (songID) => {
+        const songRawData = await dMusicContract.getSongDetails(songID.toString());
+        const song = {
+          id: songID.toString(),
+          name: songRawData[0].toString(),
+          artistName: songRawData[1].toString(),
+          genre: songRawData[2].toString(),
+          hash: songRawData[3].toString(),
+          price: ethers.utils.formatEther(songRawData[4]).toString(),
+          timesSongPurchased: songRawData[5].toString(),
+        };
+        return song;
+      })
+    );
+
     const initialUser = {
-      ...fakeUser,
-      SongListPurchased: fakeSongListPurchased,
+      ...userInfo,
+      songListPurchased,
     };
+
     setUser(initialUser);
   };
 
@@ -56,25 +69,16 @@ export default function HomePage() {
           `http://localhost:3000${sampleArt}`,
           currentSong.name,
           `${currentSong.artistName.slice(0, 5)}...${currentSong.artistName.slice(-4)}`,
-          `http://localhost:3000${sampleMusic}`
+          `https://gateway.pinata.cloud/ipfs/${currentSong.hash}`
         ),
       ]);
     }
   }, [currentSong]);
 
   useEffect(() => {
-    console.log("homepage");
-    // const changeAccount = async () => {
-    //   window.ethereum.on("accountsChanged", async (accounts) => {
-    //     console.log(accounts[0]);
-    //     await disconnectWallet();
-    //   });
-    // };
-
     if (!user) {
       loadUser();
     }
-    // changeAccount();
   }, [user]);
 
   return (
@@ -82,7 +86,7 @@ export default function HomePage() {
       <Tables
         currentSong={currentSong}
         setCurrentSong={setCurrentSong}
-        songListPurchased={user.SongListPurchased}
+        songListPurchased={user.songListPurchased}
         user={user}
       />
     )

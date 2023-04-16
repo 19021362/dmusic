@@ -30,7 +30,6 @@ function DialogForm({ open, setOpen, handleSubmitAddSong }) {
   };
 
   const captureFile = (e) => {
-    console.log(e.target.files[0]);
     setFormValue({
       ...formValue,
       file: e.target.files[0],
@@ -39,7 +38,6 @@ function DialogForm({ open, setOpen, handleSubmitAddSong }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log({ formValue });
     handleSubmitAddSong({ formValue });
     setOpen(false);
   };

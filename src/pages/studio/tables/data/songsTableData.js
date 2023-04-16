@@ -9,8 +9,6 @@ import PropTypes from "prop-types";
 import fakeImage from "assets/images/team-1.jpg";
 
 export default function songsTableData({ songListReleased }) {
-  console.log({ songListReleased });
-
   function SongTitle({ song }) {
     return (
       <MDBox display="flex" alignItems="center" lineHeight={1}>

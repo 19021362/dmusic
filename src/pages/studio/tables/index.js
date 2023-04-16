@@ -34,10 +34,7 @@ import MDButton from "components/MDButton";
 import DashboardNavbar from "examples/Navbars/DashboardNavbar";
 
 function Tables({ artist, setAddSong }) {
-  console.log({ artist });
   const { columns, rows } = songsTableData({ songListReleased: artist.songListReleased });
-
-  console.log({ columns, rows });
 
   return (
     <DashboardLayout>
@@ -81,7 +78,7 @@ function Tables({ artist, setAddSong }) {
                   My Released Songs
                 </MDTypography>
               </MDBox>
-              {rows?.length > 0 && (
+              {rows?.length > 0 ? (
                 <MDBox pt={3}>
                   <DataTable
                     table={{ columns, rows }}
@@ -90,6 +87,16 @@ function Tables({ artist, setAddSong }) {
                     showTotalEntries={false}
                     noEndBorder
                   />
+                </MDBox>
+              ) : (
+                <MDBox pt={6} pb={6}>
+                  <Grid container justifyContent="center">
+                    <Grid item sx={12}>
+                      <MDTypography variant="h6" color="text">
+                        No Released Songs
+                      </MDTypography>{" "}
+                    </Grid>
+                  </Grid>
                 </MDBox>
               )}
             </Card>

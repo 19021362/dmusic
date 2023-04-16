@@ -70,7 +70,7 @@ function Tables({ currentSong, setCurrentSong, songListPurchased, user }) {
                   Puchased Songs
                 </MDTypography>
               </MDBox>
-              {rows?.length > 0 && (
+              {rows?.length > 0 ? (
                 <MDBox pt={3}>
                   <DataTable
                     table={{ columns, rows }}
@@ -79,6 +79,16 @@ function Tables({ currentSong, setCurrentSong, songListPurchased, user }) {
                     showTotalEntries={false}
                     noEndBorder
                   />
+                </MDBox>
+              ) : (
+                <MDBox pt={6} pb={6}>
+                  <Grid container justifyContent="center">
+                    <Grid item sx={12}>
+                      <MDTypography variant="h6" color="text">
+                        No Puchased Songs
+                      </MDTypography>{" "}
+                    </Grid>
+                  </Grid>
                 </MDBox>
               )}
             </Card>
