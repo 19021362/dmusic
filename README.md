@@ -2,7 +2,7 @@
 - Node: >= 16
 - MetaMask wallet
 # Setup
-``` npm install ```
+``` npm i --legacy-peer-deps ```
 or
 ``` yarn install ```
 
@@ -32,3 +32,6 @@ You can create get the **pinata api key** and **secret key** [HERE](https://app.
 
 # Start the app
 `npm start`
+
+### UI Material Design
+[MUI_creative_tim](https://demos.creative-tim.com/material-dashboard-react/#/dashboard)  
