@@ -5,6 +5,7 @@
 import PropTypes from "prop-types";
 
 import {
+  CircularProgress,
   Dialog,
   DialogActions,
   DialogContent,
@@ -18,9 +19,11 @@ import { useState } from "react";
 
 function DialogForm({ open, setOpen, handleSubmitAddSong }) {
   const [formValue, setFormValue] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleClose = () => {
     setOpen(false);
+    setIsLoading(false);
     setFormValue({});
   };
 
@@ -38,8 +41,8 @@ function DialogForm({ open, setOpen, handleSubmitAddSong }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    handleSubmitAddSong({ formValue });
-    setOpen(false);
+    setIsLoading(true);
+    handleSubmitAddSong({ formValue, setOpenModal: setOpen });
   };
 
   return (
@@ -92,12 +95,25 @@ function DialogForm({ open, setOpen, handleSubmitAddSong }) {
             />
           </DialogContent>
           <DialogActions>
-            <MDButton variant="contained" color="secondary" onClick={handleClose}>
-              Cancel
-            </MDButton>
-            <MDButton type="submit" variant="contained" color="info">
-              Submit
-            </MDButton>
+            {!isLoading ? (
+              <>
+                <MDButton variant="contained" color="secondary" onClick={handleClose}>
+                  Cancel
+                </MDButton>
+                <MDButton type="submit" variant="contained" color="info">
+                  Submit
+                </MDButton>
+              </>
+            ) : (
+              <MDButton
+                variant="contained"
+                color="secondary"
+                disabled
+                startDecorator={<CircularProgress variant="solid" thickness={2} />}
+              >
+                Loading...
+              </MDButton>
+            )}
           </DialogActions>
         </form>
       </Dialog>

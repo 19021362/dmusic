@@ -13,6 +13,7 @@ import brandWhite from "assets/images/logo-ct.png";
 import brandDark from "assets/images/logo-ct-dark.png";
 import routes from "routes";
 import LoginPage from "pages/login";
+import MDSnackbar from "components/MDSnackbar";
 
 export default function App() {
   const [controller, dispatch] = useMaterialUIController();
@@ -21,6 +22,11 @@ export default function App() {
 
   const [isLogin, setIsLogin] = useState(false);
   const [user, setUser] = useState(null);
+  const [alert, setAlert] = useState({
+    open: false,
+    message: "",
+    type: "",
+  });
 
   const [onMouseEnter, setOnMouseEnter] = useState(false);
   const { pathname } = useLocation();
@@ -46,6 +52,30 @@ export default function App() {
     navigate("/");
     setIsLogin(false);
   };
+
+  const renderAlert = (
+    <MDSnackbar
+      color={alert.type}
+      title="Notification"
+      content={alert.message}
+      open={alert.open}
+      onClose={() =>
+        setAlert({
+          open: false,
+          type: "",
+          message: "",
+        })
+      }
+      close={() =>
+        setAlert({
+          open: false,
+          type: "",
+          message: "",
+        })
+      }
+      bgWhite
+    />
+  );
 
   // Setting the dir attribute for the body element
   useEffect(() => {
@@ -111,7 +141,8 @@ export default function App() {
           </Routes>
         </>
       )}
-      {!isLogin && <LoginPage setIsLogin={setIsLogin} setUser={setUser} />}
+      {!isLogin && <LoginPage setIsLogin={setIsLogin} setUser={setUser} setAlert={setAlert} />}
+      {renderAlert}
     </ThemeProvider>
   );
 }

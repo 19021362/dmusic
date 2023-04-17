@@ -33,13 +33,23 @@ function SongList({ songlist, buySong }) {
         </MDBox>
         <Divider />
         <MDBox p={2}>
-          <Grid container spacing={6}>
-            {songlist?.map((song) => (
-              <Grid item xs={12} md={6} xl={3}>
-                <SongCard song={song} image={fakeImage} buySong={buySong} />
+          {songlist?.length ? (
+            <Grid container spacing={6}>
+              {songlist?.map((song) => (
+                <Grid item xs={12} md={6} xl={3}>
+                  <SongCard song={song} image={fakeImage} buySong={buySong} />
+                </Grid>
+              ))}
+            </Grid>
+          ) : (
+            <Grid container justifyContent="center">
+              <Grid item sx={12}>
+                <MDTypography variant="h6" color="text">
+                  No Song
+                </MDTypography>{" "}
               </Grid>
-            ))}
-          </Grid>
+            </Grid>
+          )}
         </MDBox>
       </Header>
     </DashboardLayout>

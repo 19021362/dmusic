@@ -16,7 +16,7 @@ import contractAbi from "../../abis/Dmusic.json";
 
 const contractAddress = process.env.REACT_APP_CONTRACT_ADDRESS;
 
-function LoginPage({ setIsLogin, setUser }) {
+function LoginPage({ setIsLogin, setUser, setAlert }) {
   const provider = new ethers.providers.Web3Provider(window.ethereum);
   const signer = provider.getSigner();
   const dMusicContract = new ethers.Contract(contractAddress, contractAbi.abi, provider);
@@ -25,7 +25,11 @@ function LoginPage({ setIsLogin, setUser }) {
     try {
       const { ethereum } = window;
       if (!ethereum) {
-        alert("Please install MetaMask");
+        setAlert({
+          open: true,
+          message: "Please install the Metamask wallet!",
+          type: "warning",
+        });
         return;
       }
       const accounts = await provider.send("eth_requestAccounts", []);
@@ -43,9 +47,18 @@ function LoginPage({ setIsLogin, setUser }) {
         console.log(accounts[0]);
         setUser(accounts[0]);
         setIsLogin(true);
-        console.log("Login successfully");
+
+        setAlert({
+          open: true,
+          message: "Login successful!",
+          type: "success",
+        });
       } else {
-        alert("Wrong network!");
+        setAlert({
+          open: true,
+          message: "Wrorg Network. Please change the network to the localhost!",
+          type: "error",
+        });
       }
     } catch (error) {
       console.log(error);

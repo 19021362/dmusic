@@ -23,6 +23,9 @@ import Icon from "@mui/material/Icon";
 import Divider from "@mui/material/Divider";
 import Fade from "@mui/material/Fade";
 
+import NotificationsIcon from "@mui/icons-material/Notifications";
+import CloseIcon from "@mui/icons-material/Close";
+
 // Material Dashboard 2 React components
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
@@ -66,7 +69,9 @@ function MDSnackbar({ color, icon, title, dateTime, content, close, bgWhite, ...
       {...rest}
       action={
         <IconButton size="small" aria-label="close" color="inherit" onClick={close}>
-          <Icon fontSize="small">close</Icon>
+          <Icon fontSize="small">
+            <CloseIcon />
+          </Icon>
         </IconButton>
       }
     >
@@ -92,7 +97,7 @@ function MDSnackbar({ color, icon, title, dateTime, content, close, bgWhite, ...
         >
           <MDBox display="flex" alignItems="center" lineHeight={0}>
             <MDSnackbarIconRoot fontSize="small" ownerState={{ color, bgWhite }}>
-              {icon}
+              <NotificationsIcon />
             </MDSnackbarIconRoot>
             <MDTypography
               variant="button"
@@ -118,7 +123,7 @@ function MDSnackbar({ color, icon, title, dateTime, content, close, bgWhite, ...
               }}
               onClick={close}
             >
-              close
+              <CloseIcon />
             </Icon>
           </MDBox>
         </MDBox>

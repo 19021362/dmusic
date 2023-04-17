@@ -9,9 +9,18 @@ import CardMedia from "@mui/material/CardMedia";
 import MDBox from "components/MDBox";
 import MDTypography from "components/MDTypography";
 import MDButton from "components/MDButton";
-import { Grid } from "@mui/material";
+import { CircularProgress, Grid } from "@mui/material";
+import { useState } from "react";
 
 function SongCard({ image, song, buySong }) {
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleBuy = async ({ id, price }) => {
+    setIsLoading(true);
+    await buySong({ id, price });
+    setIsLoading(false);
+  };
+
   return (
     <Card
       sx={{
@@ -80,14 +89,26 @@ function SongCard({ image, song, buySong }) {
           </Grid>
         </MDBox>
         <MDBox display="flex" justifyContent="center" alignItems="center" mb={-1}>
-          <MDButton
-            variant="gradient"
-            size="small"
-            color="info"
-            onClick={() => buySong({ id: song.id, price: song.price })}
-          >
-            {song.price} ETH
-          </MDButton>
+          {!isLoading ? (
+            <MDButton
+              variant="gradient"
+              size="small"
+              color="info"
+              onClick={() => handleBuy({ id: song.id, price: song.price })}
+            >
+              {song.price} ETH
+            </MDButton>
+          ) : (
+            <MDButton
+              variant="gradient"
+              size="small"
+              color="info"
+              disabled
+              startDecorator={<CircularProgress variant="solid" thickness={2} />}
+            >
+              Loading...
+            </MDButton>
+          )}
         </MDBox>
       </MDBox>
     </Card>

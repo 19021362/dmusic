@@ -7,6 +7,7 @@ import React, { useEffect, useState } from "react";
 
 import axios from "axios";
 import { wait } from "@testing-library/user-event/dist/utils";
+import MDSnackbar from "components/MDSnackbar";
 import contractAbi from "../../abis/Dmusic.json";
 import Tables from "./tables";
 import DialogForm from "./modal";
@@ -20,48 +21,66 @@ function ArtistPage() {
 
   const [artist, setArtist] = useState(null);
   const [addSong, setAddSong] = useState(false);
+  const [alert, setAlert] = useState({
+    open: false,
+    message: "",
+    type: "",
+  });
 
   const loadArtist = async () => {
-    const checkArtist = await dMusicContract.connect(signer).checkArtist();
-    if (!checkArtist) {
-      const tx = await dMusicContract.connect(signer).addNewArtist();
-      await tx.wait();
-    }
-    const tx = await dMusicContract.connect(signer).getArtistDetails();
+    try {
+      const checkArtist = await dMusicContract.connect(signer).checkArtist();
+      if (!checkArtist) {
+        const tx = await dMusicContract.connect(signer).addNewArtist();
+        await tx.wait();
+        setAlert({
+          open: true,
+          message: "Register artist successfully!",
+          type: "success",
+        });
+      }
+      const tx = await dMusicContract.connect(signer).getArtistDetails();
 
-    let artistInfo = {};
-    if (tx && tx.length) {
-      artistInfo = {
-        name: tx[0],
-        id: tx[1].toString(),
-        songReleased: tx[2],
-      };
-    }
-
-    const songListReleased = await Promise.all(
-      tx[2]?.map(async (songID) => {
-        const songRawData = await dMusicContract.getSongDetails(songID.toString());
-        const song = {
-          id: songID.toString(),
-          name: songRawData[0].toString(),
-          artistName: songRawData[1].toString(),
-          genre: songRawData[2].toString(),
-          hash: songRawData[3].toString(),
-          price: ethers.utils.formatEther(songRawData[4]).toString(),
-          timesSongPurchased: songRawData[5].toString(),
+      let artistInfo = {};
+      if (tx && tx.length) {
+        artistInfo = {
+          name: tx[0],
+          id: tx[1].toString(),
+          songReleased: tx[2],
         };
-        return song;
-      })
-    );
+      }
 
-    const initialArtist = {
-      ...artistInfo,
-      songListReleased,
-    };
-    setArtist(initialArtist);
+      const songListReleased = await Promise.all(
+        tx[2]?.map(async (songID) => {
+          const songRawData = await dMusicContract.getSongDetails(songID.toString());
+          const song = {
+            id: songID.toString(),
+            name: songRawData[0].toString(),
+            artistName: songRawData[1].toString(),
+            genre: songRawData[2].toString(),
+            hash: songRawData[3].toString(),
+            price: ethers.utils.formatEther(songRawData[4]).toString(),
+            timesSongPurchased: songRawData[5].toString(),
+          };
+          return song;
+        })
+      );
+
+      const initialArtist = {
+        ...artistInfo,
+        songListReleased,
+      };
+      setArtist(initialArtist);
+    } catch (error) {
+      setAlert({
+        open: true,
+        message: "Something went wrong!",
+        type: "error",
+      });
+    }
   };
 
-  const handleSubmitAddSong = async ({ formValue }) => {
+  const handleSubmitAddSong = async ({ formValue, setOpenModal }) => {
     if (formValue.file) {
       try {
         const formData = new FormData();
@@ -85,15 +104,50 @@ function ArtistPage() {
 
         await tx.wait();
         await wait(1000);
-
+        setOpenModal(false);
+        setAlert({
+          open: true,
+          message: "Release song successfully!",
+          type: "success",
+        });
         setAddSong(false);
         setArtist(null);
       } catch (error) {
+        setOpenModal(false);
+        setAlert({
+          open: true,
+          message: "Release song fail!",
+          type: "error",
+        });
         console.log("Error sending File to IPFS: ");
         console.log(error);
       }
     }
   };
+
+  const renderAlert = (
+    <MDSnackbar
+      color={alert.type}
+      title="Notification"
+      content={alert.message}
+      open={alert.open}
+      onClose={() =>
+        setAlert({
+          open: false,
+          type: "",
+          message: "",
+        })
+      }
+      close={() =>
+        setAlert({
+          open: false,
+          type: "",
+          message: "",
+        })
+      }
+      bgWhite
+    />
+  );
 
   useEffect(() => {
     if (!artist) {
@@ -106,6 +160,7 @@ function ArtistPage() {
       <>
         <Tables artist={artist} setAddSong={setAddSong} />
         <DialogForm open={addSong} setOpen={setAddSong} handleSubmitAddSong={handleSubmitAddSong} />
+        {renderAlert}
       </>
     )
   );
