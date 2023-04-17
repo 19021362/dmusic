@@ -23,7 +23,7 @@ import pxToRem from "assets/theme-dark/functions/pxToRem";
 import rgba from "assets/theme-dark/functions/rgba";
 
 const { size } = typography;
-const { white } = colors;
+const { white, background } = colors;
 const { borderWidth, borderColor } = borders;
 
 const dialogContent = {
@@ -32,6 +32,7 @@ const dialogContent = {
       padding: pxToRem(16),
       fontSize: size.md,
       color: rgba(white.main, 0.8),
+      backgroundColor: background.card,
     },
 
     dividers: {

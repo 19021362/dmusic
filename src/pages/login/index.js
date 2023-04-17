@@ -76,8 +76,8 @@ function LoginPage({ setIsLogin, setUser, setAlert }) {
           color="white"
           my={5}
         >
-          <MDTypography fontSize={64} fontWeight="bold" color="white">
-            Welcome to DMUSIC
+          <MDTypography variant="h1" fontWeight="bold" color="white">
+            Welcome to Dmusic
           </MDTypography>
         </MDBox>
         <MDBox display="flex" justifyContent="center" alignItems="center" flexWrap="wrap">

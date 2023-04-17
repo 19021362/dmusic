@@ -14,12 +14,16 @@ Coded by www.creative-tim.com
 */
 
 // Material Dashboard 2 React helper functions
+import colors from "assets/theme-dark/base/colors";
 import pxToRem from "assets/theme-dark/functions/pxToRem";
+
+const { background } = colors;
 
 const dialogActions = {
   styleOverrides: {
     root: {
       padding: pxToRem(16),
+      backgroundColor: background.card,
     },
   },
 };
