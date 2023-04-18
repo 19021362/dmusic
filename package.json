@@ -17,6 +17,7 @@
     "chart.js": "3.4.1",
     "chroma-js": "2.4.2",
     "dotenv": "^16.0.3",
+    "ipfs-only-hash": "^4.0.0",
     "prop-types": "15.8.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

@@ -94,7 +94,6 @@ function ArtistPage() {
         });
         console.log({ res });
         const fileHash = `${res.data.IpfsHash}`;
-        console.log({ fileHash });
 
         const price = `${ethers.utils.parseEther(formValue.price)}`;
 

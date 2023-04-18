@@ -45,7 +45,7 @@ function SongList({ songlist, buySong }) {
             <Grid container justifyContent="center">
               <Grid item sx={12}>
                 <MDTypography variant="h6" color="text">
-                  No Song
+                  No Songs
                 </MDTypography>{" "}
               </Grid>
             </Grid>

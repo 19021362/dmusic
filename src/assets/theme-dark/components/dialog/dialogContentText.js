@@ -21,13 +21,14 @@ import colors from "assets/theme-dark/base/colors";
 import rgba from "assets/theme-dark/functions/rgba";
 
 const { size } = typography;
-const { white } = colors;
+const { white, background } = colors;
 
 const dialogContentText = {
   styleOverrides: {
     root: {
       fontSize: size.md,
       color: rgba(white.main, 0.8),
+      backgroundColor: background.card,
     },
   },
 };

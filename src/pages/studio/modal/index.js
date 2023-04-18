@@ -15,7 +15,7 @@ import {
 } from "@mui/material";
 import DashboardLayout from "examples/LayoutContainers/DashboardLayout";
 import MDButton from "components/MDButton";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import MDInput from "components/MDInput";
 import MDTypography from "components/MDTypography";
 import MDBox from "components/MDBox";
@@ -47,6 +47,13 @@ function DialogForm({ open, setOpen, handleSubmitAddSong }) {
     setIsLoading(true);
     handleSubmitAddSong({ formValue, setOpenModal: setOpen });
   };
+
+  useEffect(() => {
+    if (!open && isLoading) {
+      setIsLoading(false);
+      setFormValue({});
+    }
+  }, [open]);
 
   return (
     <DashboardLayout>
